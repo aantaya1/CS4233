@@ -1,0 +1,7 @@
+Task list for the strategy assignment (beta-version)
+
+1) Make PieceImpl
+2) Make SquareImpl
+3) Make BoardImpl, including with copy constructors
+4) Make tests to ensure board was created correctly and can handle exceptions
+5) Start to develop game logic (moving, striking, winning, etc)

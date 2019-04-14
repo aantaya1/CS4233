@@ -1,0 +1,22 @@
+Task list for the OCR translator assignment.
+
+
+*Note: 
+	-For each one of these tasks, I will be:
+		1) Running the test to see it fail.
+		2) Re-factoring the code, as simply as possible, to make the tests pass as expected.
+		3) Running the test to see it pass.
+	-Tests 7 and 8 are not absolutely necessary but will make the test more comprehensive and clearly 
+	 show that my solution works on all inputs and digits.
+
+
+1) Create test for strings of non-equal length. Strings of non-equal length will throw an exception.
+2) Create test for empty strings. Empty strings should return "".
+3) Create test for string with just spaces. String with just spaces should return "".
+4) Create tests for single digit (0-9) with no extra spaces. These will return (0-9), respectfully.
+5) Create test for the double digit number "91", with extra spaces in between digits. This will return "91".
+6) Create test for "1234567890", with no extra spaces in between. This will return "1234567890".
+7) Create test for "1234567890", with random extra spaces in between digits. This will return "1234567890".
+8) Do some final re-factoring to make the solution more elegant and easy to read (might have to do multiple 
+ iteration of re-factoring).
+9) Run all tests to ensure everything still works after re-factoring.

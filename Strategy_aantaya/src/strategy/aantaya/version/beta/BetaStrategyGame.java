@@ -66,14 +66,6 @@ public class BetaStrategyGame implements StrategyGame {
 					gameIsOver = true;
 					return result;
 				}
-				
-				numTurns++;
-				if(numTurns > 15) {
-					gameIsOver = true;
-					return RED_WINS;
-				}
-				
-				return OK;
 			}
 			//If the square is occupied by it's own team then it's an invalid move and opposing team wins
 			else {
@@ -82,18 +74,15 @@ public class BetaStrategyGame implements StrategyGame {
 			}
 		}
 		else {//It's a valid move and square is not occupied, so move to that square
-			
 			board.movePiece(squareFrom, squareTo);
-			
-			numTurns++;
-			
-			if(numTurns > 15) {
-				gameIsOver = true;
-				return RED_WINS;
-			} 
-			
-			return OK;
 		}
+		
+		numTurns++;
+		
+		if(numTurns > 15) {
+			gameIsOver = true;
+			return RED_WINS;
+		} else return OK;
 	}
 	
 	/*

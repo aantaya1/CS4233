@@ -16,6 +16,7 @@ import strategy.*;
 import strategy.StrategyGame.Version;
 import strategy.aantaya.version.alpha.AlphaStrategyGame;
 import strategy.aantaya.version.beta.BetaStrategyGame;
+import strategy.aantaya.version.gamma.GammaStrategyGame;
 
 import static strategy.StrategyGame.*;
 
@@ -35,6 +36,9 @@ public class StrategyGameFactory
 				break;
 			case BETA:
 				game = new BetaStrategyGame(board);
+				break;
+			case GAMMA:
+				game = new GammaStrategyGame(board);
 				break;
 			default:
 				throw new NotImplementedException(

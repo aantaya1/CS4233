@@ -11,7 +11,7 @@ import strategy.StrategyException;
 import strategy.aantaya.PieceImpl;
 import strategy.aantaya.Square;
 
-public class TestBoard implements Board{
+public class MyTestBoard implements Board{
 	private Map<Square, Piece> theBoard;
 	
 	//Constants
@@ -60,7 +60,7 @@ public class TestBoard implements Board{
 	 * 
 	 * 
 	 */
-	public TestBoard(List<Piece.PieceType> redTeam, List<Piece.PieceType> blueTeam) {	
+	public MyTestBoard(List<Piece.PieceType> redTeam, List<Piece.PieceType> blueTeam) {	
 		int index = 0;
 		
 		theBoard = new HashMap<Square, Piece>();

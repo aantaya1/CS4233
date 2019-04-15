@@ -17,7 +17,7 @@ import strategy.Piece.PieceColor;
 import strategy.Piece.PieceType;
 import strategy.StrategyGame.MoveResult;
 import strategy.aantaya.Square;
-import strategy.aantaya.version.beta.BoardImpl;
+import strategy.aantaya.version.gamma.BoardImpl;
 
 /**
  * @author Owner
@@ -28,10 +28,10 @@ public class GammaStrategyGame implements StrategyGame {
 	private BoardImpl board;
 	private boolean isRedTurn;
 	private boolean gameIsOver;
-	private Set<Square> redMoves = new HashSet<>();
-	private Set<Square> blueMoves = new HashSet<>();
 	private Square previousRedToSquare;
+	private Square previousRedFromSquare;
 	private Square previousBlueToSquare;
+	private Square previousBlueFromSquare;
 	private int redRepetition = 0;
 	private int blueRepetition = 0;
 	
@@ -178,44 +178,47 @@ public class GammaStrategyGame implements StrategyGame {
 	private boolean violatesRepetitionRule(Square squareFrom, Square squareTo) {		
 		if(isRedTurn) {
 			//null check is if it is the first red move of the game
-			//(previousRedToSquare != squareFrom) is to check if the square I am moving from is NOT the square 
-			//	that I moved to in the previous move
+			//(previousRedToSquare != squareFrom) is to check if the square we are moving from is NOT the square 
+			//	that we moved to in the previous move (i.e. we are moving the same piece we moved in the last turn)
 			if(previousRedToSquare == null || !previousRedToSquare.equals(squareFrom)) {
 				previousRedToSquare = squareTo;
+				previousRedFromSquare = squareFrom;
 				redRepetition = 1;
 				return false;
 			}
 			
-			redRepetition++;
+			//I know we are moving the same piece we moved previous turn
+			//	now check if we are moving to the piece that we came from the previous turn
+			//	if so, index redRepetition, else reset redRepetition
+			if(previousRedFromSquare.equals(squareTo))
+				if(++redRepetition > 2) return true;
 			
-			if(redRepetition > 2) return true;
+			/*
+			 * Here either:
+			 * 1) We are repeating, but this is only the first or second time that we have moved back 
+			 * 		and forth from the same squares
+			 * 2) We are moving to a square which is NOT the square that we came from in the previous turn
+			 * 
+			 * In both cases, we reset the references we have to the squares involved in this move
+			 */
+			previousRedToSquare = squareTo;
+			previousRedFromSquare = squareFrom;
+			return false;
 			
-			//we are repeating, but this is only the first or second time that we have moved back and forth from
-			//	the same squares
-			else {
-				previousRedToSquare = squareTo;
-				return false;
-			}
 		}else {
-			//null check is if it is the first blue move of the game
-			//(previousRedToSquare != squareFrom) is to check if the square I am moving from is NOT the square 
-			//	that I moved to in the previous move
 			if(previousBlueToSquare == null || !previousBlueToSquare.equals(squareFrom)) {
 				previousBlueToSquare = squareTo;
+				previousBlueFromSquare = squareFrom;
 				blueRepetition = 1;
 				return false;
 			}
 			
-			blueRepetition++;
+			if(previousBlueFromSquare.equals(squareTo))
+				if(++blueRepetition > 2) return true;
 			
-			if(blueRepetition > 2) return true;
-			
-			//we are repeating, but this is only the first or second time that we have moved back and forth from
-			//	the same squares
-			else {
-				previousBlueToSquare = squareTo;
-				return false;
-			}
+			previousBlueToSquare = squareTo;
+			previousBlueFromSquare = squareFrom;
+			return false;
 		}
 	}
 }

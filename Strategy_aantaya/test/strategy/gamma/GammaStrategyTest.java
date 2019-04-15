@@ -173,6 +173,22 @@ class GammaStrategyTest {
 		game.move(3, 4, 2, 4);//move blue col forward
 	}
 	
+	@Test
+	void gamePlay3() {
+		game.move(1, 1, 2, 1);//red lie forward
+		game.move(4, 1, 3, 1);//blue col forward
+		assertEquals(OK, game.move(2, 1, 3, 1));//red lie strikes blue col...blue col wins and moves to (2,1)
+		game.move(2, 1, 2, 0);//blue col moves left
+		game.move(0, 1, 1, 1);//red lie forward
+		game.move(5, 1, 4, 1);//blue lie forward
+		game.move(1, 1, 2, 1);//red lie forward
+		game.move(4, 1, 3, 1);//blue lie forward
+		assertEquals(OK, game.move(2, 1, 3, 1));//red lie strikes blue lie...both taken off board
+		assertEquals(BLUE_WINS, game.move(2, 0, 1, 0));//blue col strikes red flag...BLUE_WINS
+		assertEquals(GAME_OVER, game.move(1, 4, 2, 4));//red cap forward...GAME_OVER
+		
+	}
+	
 	
 	/**
 	 * This will create the following board

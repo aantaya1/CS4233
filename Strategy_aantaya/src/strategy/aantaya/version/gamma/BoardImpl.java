@@ -106,7 +106,6 @@ public class BoardImpl implements Board {
 	 * @return true if the square has a piece on it, false otherwise
 	 */
 	public boolean isSquareOccupied(Square square) {
-		boolean t = theBoard.get(square) != null;
-		return t;
+		return theBoard.containsKey(square);
 	}
 }

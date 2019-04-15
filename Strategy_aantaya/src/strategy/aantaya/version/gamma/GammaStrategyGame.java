@@ -49,6 +49,10 @@ public class GammaStrategyGame implements StrategyGame {
 		Square squareFrom = new Square(fr, fc);
 		Square squareTo = new Square(tr, tc);
 		
+		//Make sure there is a piece at the from square
+		if(!board.isSquareOccupied(squareFrom)) 
+			return (isRedTurn) ? BLUE_WINS : RED_WINS;
+		
 		//If move is not valid, then check piece color. If it's blue red_wins else blue_wins
 		if(!isValidMove(squareFrom, squareTo)) {
 			gameIsOver = true;
@@ -93,7 +97,7 @@ public class GammaStrategyGame implements StrategyGame {
 	 * 	5) Piece must move
 	 * 	6) Cannot move over another piece
 	*/
-	private boolean isValidMove(Square squareFrom, Square squareTo) {
+	private boolean isValidMove(Square squareFrom, Square squareTo) {		
 		int yDiff = Math.abs(squareFrom.getRow() - squareTo.getRow());
 		int xDiff = Math.abs(squareFrom.getColumn() - squareTo.getColumn());
 		
@@ -103,9 +107,6 @@ public class GammaStrategyGame implements StrategyGame {
 		
 		//Cannot move to a choke point
 		if(isChokePoint(squareTo)) return false;
-		
-		//Make sure there is a piece at the from square
-		if(!board.isSquareOccupied(squareFrom)) return false;
 		
 		//Piece must move
 		if((xDiff == 0) && (yDiff == 0)) return false;
@@ -152,16 +153,16 @@ public class GammaStrategyGame implements StrategyGame {
 	
 	private int rankToInt(PieceType type) {
 		if(type == PieceType.MARSHAL) return 12;
-		else if(type == PieceType.GENERAL) return 11;
+		//else if(type == PieceType.GENERAL) return 11;
 		else if(type == PieceType.COLONEL) return 10;
-		else if(type == PieceType.MAJOR) return 9;
+		//else if(type == PieceType.MAJOR) return 9;
 		else if(type == PieceType.CAPTAIN) return 8;
 		else if(type == PieceType.LIEUTENANT) return 7;
 		else if(type == PieceType.SERGEANT) return 6;
-		else if(type == PieceType.MINER) return 5;
-		else if(type == PieceType.SCOUT) return 4;
-		else if(type == PieceType.SPY) return 3;
-		else if(type == PieceType.BOMB) return 2;
+		//else if(type == PieceType.MINER) return 5;
+		//else if(type == PieceType.SCOUT) return 4;
+		//else if(type == PieceType.SPY) return 3;
+		//else if(type == PieceType.BOMB) return 2;
 		else return 1;
 	}
 	

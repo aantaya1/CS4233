@@ -57,6 +57,22 @@ class GammaStrategyTest {
 	}
 	
 	@Test
+	void redMoveTwoSquares() {
+		assertEquals(BLUE_WINS, game.move(1, 1, 3, 1));
+	}
+	
+	@Test
+	void redMovesFromSquareWithNoPiece() {
+		assertEquals(BLUE_WINS, game.move(2, 1, 3, 1));
+	}
+	
+	@Test
+	void blueMovesFromSquareWithNoPiece() {
+		game.move(1, 1, 2, 1);
+		assertEquals(RED_WINS, game.move(4, 4, 2, 4));
+	}
+	
+	@Test
 	void redMoveDiagonally() {
 		assertEquals(BLUE_WINS, game.move(1, 1, 2, 0));
 	}

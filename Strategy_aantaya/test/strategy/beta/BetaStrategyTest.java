@@ -11,21 +11,23 @@
  *******************************************************************************/
 package strategy.beta;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.*;
-
-import strategy.Board;
-import strategy.Piece.PieceType;
-import strategy.aantaya.version.beta.BoardImpl;
-import strategy.StrategyGame;
-
-import static strategy.StrategyGame.Version.*;
-import static strategy.required.StrategyGameFactory.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static strategy.StrategyGame.MoveResult.BLUE_WINS;
+import static strategy.StrategyGame.MoveResult.GAME_OVER;
+import static strategy.StrategyGame.MoveResult.OK;
+import static strategy.StrategyGame.MoveResult.RED_WINS;
+import static strategy.StrategyGame.Version.BETA;
+import static strategy.required.StrategyGameFactory.makeGame;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static strategy.StrategyGame.MoveResult.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import strategy.Board;
+import strategy.Piece.PieceType;
+import strategy.StrategyGame;
 
 /**
  * Test cases for Alpha Strategy.

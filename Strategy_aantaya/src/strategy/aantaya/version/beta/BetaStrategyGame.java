@@ -11,13 +11,16 @@
  *******************************************************************************/
 package strategy.aantaya.version.beta;
 
-import strategy.StrategyGame;
-import strategy.aantaya.Square;
+import static strategy.StrategyGame.MoveResult.BLUE_WINS;
+import static strategy.StrategyGame.MoveResult.GAME_OVER;
+import static strategy.StrategyGame.MoveResult.OK;
+import static strategy.StrategyGame.MoveResult.RED_WINS;
 
-import static strategy.StrategyGame.MoveResult.*;
 import strategy.Board;
 import strategy.Piece.PieceColor;
-import strategy.Piece.PieceType;
+import strategy.StrategyGame;
+import strategy.aantaya.PieceImpl;
+import strategy.aantaya.Square;
 
 /**
  * Description
@@ -99,23 +102,18 @@ public class BetaStrategyGame implements StrategyGame {
 		int xDiff = Math.abs(squareFrom.getColumn() - squareTo.getColumn());
 		
 		//Make sure it's the team's turn that is the moving piece
-		if((isRedTurn && (board.getTeamAtSquare(squareFrom) == PieceColor.BLUE)) || 
-				(!isRedTurn && (board.getTeamAtSquare(squareFrom) == PieceColor.RED))) return false;
+		if(!isCorrectTeamTurn(squareFrom)) return false;
 		
 		//Make sure there is a piece at the from square
 		if(!board.isSquareOccupied(squareFrom)) return false;
 		
-		//Piece must move
-		if((xDiff == 0) && (yDiff == 0)) return false;
+		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo)) return false;
 		
 		//Within bounds of board
 		if(!BoardImpl.isWithinBounds(squareTo)) return false;
 		
 		//Since no scout, pieces can't move > 1
 		if((yDiff > 1) || (xDiff > 1)) return false;
-		
-		//Piece cannot move diagonally
-		if(yDiff == xDiff) return false;
 		
 		//Flag and bomb cannot move
 		if(!board.movablePiece(squareFrom)) return false;
@@ -124,8 +122,8 @@ public class BetaStrategyGame implements StrategyGame {
 	}	
 	
 	private MoveResult strike(Square squareFrom, Square squareTo) {
-		int pieceFrom = rankToInt(board.getPieceAt(squareFrom).getPieceType());
-		int pieceTo = rankToInt(board.getPieceAt(squareTo).getPieceType());
+		int pieceFrom = PieceImpl.rankToInt(board.getPieceAt(squareFrom).getPieceType());
+		int pieceTo = PieceImpl.rankToInt(board.getPieceAt(squareTo).getPieceType());
 		
 		//If piece that is being attacked is a flag then attacking team wins
 		if(pieceTo == 1) {
@@ -145,18 +143,8 @@ public class BetaStrategyGame implements StrategyGame {
 		return OK;
 	}
 	
-	private int rankToInt(PieceType type) {
-		if(type == PieceType.MARSHAL) return 12;
-		else if(type == PieceType.GENERAL) return 11;
-		else if(type == PieceType.COLONEL) return 10;
-		else if(type == PieceType.MAJOR) return 9;
-		else if(type == PieceType.CAPTAIN) return 8;
-		else if(type == PieceType.LIEUTENANT) return 7;
-		else if(type == PieceType.SERGEANT) return 6;
-		else if(type == PieceType.MINER) return 5;
-		else if(type == PieceType.SCOUT) return 4;
-		else if(type == PieceType.SPY) return 3;
-		else if(type == PieceType.BOMB) return 2;
-		else return 1;
+	private boolean isCorrectTeamTurn(Square s) {
+		return (!(isRedTurn && (board.getTeamAtSquare(s) == PieceColor.BLUE)) || 
+				(!isRedTurn && (board.getTeamAtSquare(s) == PieceColor.RED)));
 	}
 }

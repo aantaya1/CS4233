@@ -12,6 +12,7 @@
 
 package strategy.aantaya.version.gamma;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,6 @@ import strategy.Board;
 import strategy.Piece;
 import strategy.Piece.PieceColor;
 import strategy.Piece.PieceType;
-import strategy.StrategyException;
 import strategy.aantaya.PieceImpl;
 import strategy.aantaya.Square;
 
@@ -31,6 +31,7 @@ import strategy.aantaya.Square;
 public class BoardImpl implements Board {
 	
 	private Map<Square, Piece> theBoard;
+	private static final List<Square> chokePoints = Arrays.asList(new Square(2,2), new Square(2,3), new Square(3,2), new Square(3,3)); 
 	
 	//Constants
 	private static final int MAX_ROWS = 5;
@@ -107,5 +108,12 @@ public class BoardImpl implements Board {
 	 */
 	public boolean isSquareOccupied(Square square) {
 		return theBoard.containsKey(square);
+	}
+	
+	public static boolean isChokePoint(Square s) {
+		for(Square temp : chokePoints)
+			if(s.equals(temp)) return true;
+		
+		return false;
 	}
 }

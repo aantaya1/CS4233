@@ -18,8 +18,6 @@ import strategy.aantaya.version.alpha.AlphaStrategyGame;
 import strategy.aantaya.version.beta.BetaStrategyGame;
 import strategy.aantaya.version.gamma.GammaStrategyGame;
 
-import static strategy.StrategyGame.*;
-
 /**
  * Factory for creating Strategy games.
  * @version Mar 18, 2019

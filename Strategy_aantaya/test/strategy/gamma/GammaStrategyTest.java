@@ -16,7 +16,6 @@ import org.junit.jupiter.api.*;
 
 import strategy.Board;
 import strategy.Piece.PieceType;
-import strategy.aantaya.version.beta.BoardImpl;
 import strategy.StrategyGame;
 
 import static strategy.StrategyGame.Version.*;
@@ -204,6 +203,8 @@ class GammaStrategyTest {
 		assertEquals(GAME_OVER, game.move(1, 4, 2, 4));//red cap forward...GAME_OVER
 		
 	}
+	
+	//TODO: Make test to determine if a player cannot move anymore
 	
 	
 	/**

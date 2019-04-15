@@ -180,7 +180,7 @@ public class GammaStrategyGame implements StrategyGame {
 			//null check is if it is the first red move of the game
 			//(previousRedToSquare != squareFrom) is to check if the square I am moving from is NOT the square 
 			//	that I moved to in the previous move
-			if(previousRedToSquare == null || previousRedToSquare != squareFrom) {
+			if(previousRedToSquare == null || !previousRedToSquare.equals(squareFrom)) {
 				previousRedToSquare = squareTo;
 				redRepetition = 1;
 				return false;
@@ -200,7 +200,7 @@ public class GammaStrategyGame implements StrategyGame {
 			//null check is if it is the first blue move of the game
 			//(previousRedToSquare != squareFrom) is to check if the square I am moving from is NOT the square 
 			//	that I moved to in the previous move
-			if(previousBlueToSquare == null || previousBlueToSquare != squareFrom) {
+			if(previousBlueToSquare == null || !previousBlueToSquare.equals(squareFrom)) {
 				previousBlueToSquare = squareTo;
 				blueRepetition = 1;
 				return false;

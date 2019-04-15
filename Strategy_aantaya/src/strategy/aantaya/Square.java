@@ -53,4 +53,8 @@ public class Square {
 		Square other = (Square) obj;
 		return column == other.column && row == other.row;
 	}
+
+	public boolean equals(Square s) {
+		return ((s.getRow() == this.row) && (s.getColumn() == this.column)) ? true : false;
+	}
 }

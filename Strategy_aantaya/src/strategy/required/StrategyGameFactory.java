@@ -31,7 +31,7 @@ public class StrategyGameFactory
 		StrategyGame game;
 		switch (version)
 		{
-			case ALPHA:					// No need for the board
+			case ALPHA: // No need for the board
 				game = new AlphaStrategyGame();
 				break;
 			case BETA:

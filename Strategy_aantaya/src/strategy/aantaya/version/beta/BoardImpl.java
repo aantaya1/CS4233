@@ -92,7 +92,7 @@ public class BoardImpl implements Board {
 	
 	public boolean movablePiece(Square s) {
 		PieceType p = theBoard.get(s).getPieceType();
-		if((p == PieceType.BOMB) || (p == PieceType.FLAG)) return false;
+		if(p == PieceType.FLAG) return false;
 		else return true;
 	}
 	

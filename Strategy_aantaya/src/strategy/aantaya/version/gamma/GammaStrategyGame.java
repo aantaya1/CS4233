@@ -9,12 +9,11 @@ import static strategy.StrategyGame.MoveResult.OK;
 import static strategy.StrategyGame.MoveResult.RED_WINS;
 
 import strategy.Board;
-import strategy.StrategyGame;
 import strategy.Piece.PieceColor;
+import strategy.StrategyGame;
 import strategy.aantaya.PieceImpl;
 import strategy.aantaya.Square;
 import strategy.aantaya.StrategyGameTemplate;
-import strategy.aantaya.version.gamma.BoardImpl;
 
 /**
  * @author Owner
@@ -41,7 +40,6 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 	//from_row, from_column, to_row, to_column
 	@Override
 	public MoveResult move(int fr, int fc, int tr, int tc) {
-		//Every move past 16 will return game over
 		if(gameIsOver) return GAME_OVER;
 		
 		Square squareFrom = new Square(fr, fc);
@@ -96,23 +94,18 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 	 * 	6) Cannot move over another piece
 	*/
 	@Override
-	public boolean isValidMove(Square squareFrom, Square squareTo) {		
-		int yDiff = Math.abs(squareFrom.getRow() - squareTo.getRow());
-		int xDiff = Math.abs(squareFrom.getColumn() - squareTo.getColumn());
+	public boolean isValidMove(Square squareFrom, Square squareTo) {
 		
 		//Make sure it's the team's turn that is moving the piece
 		if(!isCorrectTeamTurn(squareFrom)) return false;
 		
-		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo)) return false;
+		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo, board.getPieceAt(squareFrom))) return false;
 		
 		//Cannot move to a choke point
 		if(BoardImpl.isChokePoint(squareTo)) return false;
 		
 		//Within bounds of board
 		if(!BoardImpl.isWithinBounds(squareTo)) return false;
-		
-		//Since no scout, pieces can't move > 1
-		if((yDiff > 1) || (xDiff > 1)) return false;
 		
 		//Flag and bomb cannot move
 		if(!board.movablePiece(squareFrom)) return false;

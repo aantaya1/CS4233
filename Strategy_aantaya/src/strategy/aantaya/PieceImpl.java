@@ -48,7 +48,7 @@ public class PieceImpl implements Piece{
 		else return 1;
 	}
 	
-	public static boolean isValidPhysicalMove(Square squareFrom, Square squareTo) {
+	public static boolean isValidPhysicalMove(Square squareFrom, Square squareTo, Piece p) {
 		int yDiff = Math.abs(squareFrom.getRow() - squareTo.getRow());
 		int xDiff = Math.abs(squareFrom.getColumn() - squareTo.getColumn());
 		
@@ -57,6 +57,9 @@ public class PieceImpl implements Piece{
 		
 		//Piece cannot move diagonally
 		if(yDiff == xDiff) return false;
+		
+		if(p.getPieceType() != PieceType.SCOUT)
+			if((yDiff > 1) || (xDiff > 1)) return false;
 		
 		return true;
 	}

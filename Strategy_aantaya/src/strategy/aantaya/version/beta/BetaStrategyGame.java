@@ -97,23 +97,17 @@ public class BetaStrategyGame implements StrategyGame {
 	 * 	5) Piece must move
 	 * 	6) Cannot move over another piece
 	*/
-	private boolean isValidMove(Square squareFrom, Square squareTo) {
-		int yDiff = Math.abs(squareFrom.getRow() - squareTo.getRow());
-		int xDiff = Math.abs(squareFrom.getColumn() - squareTo.getColumn());
-		
+	private boolean isValidMove(Square squareFrom, Square squareTo) {		
 		//Make sure it's the team's turn that is the moving piece
 		if(!isCorrectTeamTurn(squareFrom)) return false;
 		
 		//Make sure there is a piece at the from square
 		if(!board.isSquareOccupied(squareFrom)) return false;
 		
-		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo)) return false;
+		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo, board.getPieceAt(squareFrom))) return false;
 		
 		//Within bounds of board
 		if(!BoardImpl.isWithinBounds(squareTo)) return false;
-		
-		//Since no scout, pieces can't move > 1
-		if((yDiff > 1) || (xDiff > 1)) return false;
 		
 		//Flag and bomb cannot move
 		if(!board.movablePiece(squareFrom)) return false;

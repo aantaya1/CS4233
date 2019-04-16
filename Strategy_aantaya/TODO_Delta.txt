@@ -1,3 +1,5 @@
+//-----Mechanics-----//
+
 1)Move piece from a square that doesn't have a piece on it
 2)Move piece out of bounds
 3)Move flag or bomb
@@ -7,6 +9,10 @@
 7)Move to square occupied by own team
 8)Move to choke point
 9)Repetition rule
+10)Move scout two squares
+
+//-----Striking-----//
+
 10)Marshal strikes spy...marshal wins
 11)Spy strikes marshal...spy wins
 12)Marshal strikes bomb...bomb wins and doesn't move
@@ -14,5 +20,5 @@
 14)Scout moves >1 open square
 15)Scout moves >1 square, but over another piece...invalid move, other team wins
 16)Scout moves and strikes in same turn...invalid move, other team wins
-17)Player only has immovable pieces left (ie can't make a move), other team wins
+17)Player only has immovable pieces left (i.e. can't make a move), other team wins
 18)Test moving to all choke points

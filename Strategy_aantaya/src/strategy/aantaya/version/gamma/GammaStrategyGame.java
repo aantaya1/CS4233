@@ -99,6 +99,7 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 		//Make sure it's the team's turn that is moving the piece
 		if(!isCorrectTeamTurn(squareFrom)) return false;
 		
+		//Make sure piece is not moving diagonally or more than two squares unless its a scout
 		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo, board.getPieceAt(squareFrom))) return false;
 		
 		//Cannot move to a choke point

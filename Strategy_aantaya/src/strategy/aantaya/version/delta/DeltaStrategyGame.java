@@ -9,13 +9,12 @@ import static strategy.StrategyGame.MoveResult.OK;
 import static strategy.StrategyGame.MoveResult.RED_WINS;
 
 import strategy.Board;
-import strategy.Piece;
 import strategy.Piece.PieceColor;
+import strategy.Piece.PieceType;
 import strategy.StrategyGame;
 import strategy.aantaya.PieceImpl;
 import strategy.aantaya.Square;
 import strategy.aantaya.StrategyGameTemplate;
-import strategy.aantaya.version.delta.BoardImpl;
 
 /**
  * @author Owner
@@ -58,7 +57,7 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 		//If move is not valid, then check piece color. If it's blue red_wins else blue_wins
 		if(!isValidMove(squareFrom, squareTo)) {
 			gameIsOver = true;
-			return (board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) ? RED_WINS : BLUE_WINS;
+			return (!isRedTurn) ? RED_WINS : BLUE_WINS;
 		}
 		
 		//In isValidMove() we make sure the correct team is moving so now we can flip this variable
@@ -94,13 +93,21 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 	 * @see strategy.aantaya.StrategyGameTemplate#isValidMove(strategy.aantaya.Square, strategy.aantaya.Square)
 	 */
 	@Override
-	public boolean isValidMove(Square squareFrom, Square squareTo) {		
+	public boolean isValidMove(Square squareFrom, Square squareTo) {	
+		int yDiff = Math.abs(squareFrom.getRow() - squareTo.getRow());
+		int xDiff = Math.abs(squareFrom.getColumn() - squareTo.getColumn());
+		
 		//Make sure it's the team's turn that is moving the piece
 		if(!isCorrectTeamTurn(squareFrom)) return false;
 		
+		//Make sure piece is not moving diagonally or more than two squares unless its a scout
 		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo, board.getPieceAt(squareFrom))) return false;
-		
-		if(!board.isClearPath(squareFrom, squareTo)) return false;
+
+		if(board.getPieceAt(squareFrom).getPieceType() == PieceType.SCOUT) {
+			//if it is a scout and it is moving more than one square and it's path is not clear then invalid move
+			if( (yDiff > 1 || xDiff > 1) && (!board.isClearPath(squareFrom, squareTo) ) ) return false;
+		}
+		else if((yDiff > 1) || (xDiff > 1)) return false; //if not a scout can not move more than one square
 		
 		//Cannot move to a choke point
 		if(BoardImpl.isChokePoint(squareTo)) return false;
@@ -137,7 +144,13 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 			return OK;
 		}
 		
-		if(pieceFrom > pieceTo) board.movePiece(squareFrom, squareTo);
+		//if pieceTo is a bomber (rank == 2) and pieceFrom is not a miner (rank == 5)
+		if(pieceTo == 2 && pieceFrom != 5) {
+			board.removeOnePiece(squareFrom);
+			return OK;
+		}
+		
+		if((pieceFrom > pieceTo) || ((pieceFrom == 3) && (pieceTo == 12))) board.movePiece(squareFrom, squareTo);
 		else board.movePiece(squareTo, squareFrom);
 		
 		return OK;

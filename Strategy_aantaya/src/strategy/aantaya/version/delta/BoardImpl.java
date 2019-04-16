@@ -70,6 +70,10 @@ public class BoardImpl implements Board {
 		theBoard.remove(two);
 	}
 	
+	public void removeOnePiece(Square s) {
+		theBoard.remove(s);
+	}
+	
 	public Piece getPieceAt(int row, int column) {
 		return theBoard.get(new Square(row, column));
 	}

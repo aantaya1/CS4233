@@ -1,16 +1,7 @@
-/*******************************************************************************
- * This files was developed for CS4233: Object-Oriented Analysis & Design.
- * The course was taken at Worcester Polytechnic Institute.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/**
  * 
- * Copyright ©2016 Gary F. Pollice
- *******************************************************************************/
-
-package strategy.aantaya.version.gamma;
+ */
+package strategy.aantaya.version.delta;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,18 +16,19 @@ import strategy.aantaya.PieceImpl;
 import strategy.aantaya.Square;
 
 /**
- * Description
- * @version Mar 18, 2019
+ * @author Owner
+ *
  */
 public class BoardImpl implements Board {
-	
+
 	private Map<Square, Piece> theBoard;
 	private static final List<Square> chokePoints = Arrays.asList(
-			new Square(2,2), new Square(2,3), new Square(3,2), new Square(3,3)); 
+			new Square(4,2), new Square(4,3), new Square(5,2), new Square(5,3),
+			new Square(4,6), new Square(4,7), new Square(5,6), new Square(5,7)); 
 	
 	//Constants
-	private static final int MAX_ROWS = 5;
-	private static final int MAX_COLUMNS = 5;
+	private static final int MAX_ROWS = 9;
+	private static final int MAX_COLUMNS = 9;
 	
 	/**
 	 * Converting a board that implements the Board interface to my specific implementation
@@ -45,7 +37,7 @@ public class BoardImpl implements Board {
 		theBoard = new HashMap<Square, Piece>();
 		
 		//Populate red team
-		for(int row=0; row<2; row++) {
+		for(int row=0; row<=3; row++) {
 			for(int column=0; column<=MAX_COLUMNS; column++) {
 				//Convert the board to our implementation, including converting each piece to our
 				//	implementation using copy constructor				
@@ -55,7 +47,7 @@ public class BoardImpl implements Board {
 		}
 		
 		//Populate blue team
-		for(int row=4; row<6; row++) {
+		for(int row=6; row<=MAX_ROWS; row++) {
 			for(int column=0; column<=MAX_COLUMNS; column++) {			
 				theBoard.put(new Square(row, column), 
 						new PieceImpl(b.getPieceAt(row, column)));
@@ -116,5 +108,5 @@ public class BoardImpl implements Board {
 			if(s.equals(temp)) return true;
 		
 		return false;
-	}
+	}	
 }

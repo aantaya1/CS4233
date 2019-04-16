@@ -1,0 +1,10 @@
+1)Move piece from a square that doesn't have a piece on it
+2)Move piece out of bounds
+3)Move flag
+4)Move a piece two squares
+5)Move diagonally
+6)Move to same square (not moving a piece)
+7)Move to square occupied by own team
+8)Move to choke point
+9)Repetition rule
+10)Regular game play with all pieces attacking all other pieces

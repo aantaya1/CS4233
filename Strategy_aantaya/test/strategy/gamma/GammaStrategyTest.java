@@ -41,90 +41,90 @@ class GammaStrategyTest {
 	//-----Game mechanics tests-----//
 	
 	@Test
-	void redMovesPieceFromSquareWithNoPiece() {
+	void redMovesPieceFromSquareWithNoPiece() {//#1
 		assertEquals(BLUE_WINS, game.move(0, 2, 0, 3));
 	}
 	
 	@Test
-	void redMovesOutOfBounds() {
+	void redMovesOutOfBounds() {//#2
 		assertEquals(BLUE_WINS, game.move(0, 1, 0, -1));
 	}
 	
 	@Test
-	void redMoveFlag() {
+	void redMoveFlag() {//#3
 		assertEquals(BLUE_WINS, game.move(1, 0, 2, 0));
 	}
 	
 	@Test
-	void redMoveTwoSquares() {
+	void redMoveTwoSquares() {//#4
 		assertEquals(BLUE_WINS, game.move(1, 1, 3, 1));
 	}
 	
 	@Test
-	void redMovesFromSquareWithNoPiece() {
+	void redMovesFromSquareWithNoPiece() {//#1
 		assertEquals(BLUE_WINS, game.move(2, 1, 3, 1));
 	}
 	
 	@Test
-	void blueMovesFromSquareWithNoPiece() {
+	void blueMovesFromSquareWithNoPiece() {//#1
 		game.move(1, 1, 2, 1);
 		assertEquals(RED_WINS, game.move(4, 4, 2, 4));
 	}
 	
 	@Test
-	void redMoveDiagonally() {
+	void redMoveDiagonally() {//#5
 		assertEquals(BLUE_WINS, game.move(1, 1, 2, 0));
 	}
 	
 	@Test
-	void blueMoveMultipleSquares() {
+	void blueMoveMultipleSquares() {//#4
 		game.move(1, 1, 2, 1);//red must go first
 		assertEquals(RED_WINS, game.move(4, 1, 2, 1));
 	}
 	
 	@Test
-	void redMoveToSameSquare() {
+	void redMoveToSameSquare() {//#6
 		assertEquals(BLUE_WINS, game.move(1, 0, 1, 0));
 	}
 	
 	@Test
-	void blueMoveToSquareOccupiedByOwnTeam() {
+	void blueMoveToSquareOccupiedByOwnTeam() {//#7
 		game.move(1, 1, 2, 1);//red must go first
 		assertEquals(RED_WINS, game.move(5, 5, 4, 5));
 	}
 	
 	@Test
-	void redMoveToSquareOccupiedByOwnTeam() {
+	void redMoveToSquareOccupiedByOwnTeam() {//#7
 		assertEquals(BLUE_WINS, game.move(0, 3, 1, 3));
 	}
 	
 	@Test
-	void redMovesToSameSquare() {
+	void redMovesToSameSquare() {//#6
 		assertEquals(BLUE_WINS, game.move(1, 4, 1, 4));
 	}
 	
 	@Test
-	void redMovesToChokeOne() {
+	void redMovesToChokeOne() {//#8
 		assertEquals(BLUE_WINS, game.move(1, 2, 2, 2));
 	}
 	
 	@Test
-	void redMovesToChokeTwo() {
+	void redMovesToChokeTwo() {//#8
 		assertEquals(BLUE_WINS, game.move(1, 3, 2, 3));
 	}
 	
 	@Test
-	void blueMovesToChokeThree() {
+	void blueMovesToChokeThree() {//#8
 		assertEquals(RED_WINS, game.move(4, 2, 3, 2));
 	}
 	
 	@Test
-	void blueMovesToChokeFour() {
+	void blueMovesToChokeFour() {//#8
 		assertEquals(RED_WINS, game.move(4, 3, 3, 3));
 	}
 	
 	@Test
-	void repetitionRuleBlueWins() {
+	void repetitionRuleBlueWins() {//#9
 		game.move(1, 4, 2, 4);//red cap forward
 		game.move(4, 5, 3, 5);//blue lie forward
 		game.move(2, 4, 1, 4);//red cap backward
@@ -134,7 +134,7 @@ class GammaStrategyTest {
 	}
 	
 	@Test
-	void repetitionRuleRedWins() {
+	void repetitionRuleRedWins() {//#9
 		game.move(1, 4, 2, 4);//red cap forward
 		game.move(4, 5, 3, 5);//blue lie forward
 		game.move(2, 4, 1, 4);//red cap backward
@@ -147,7 +147,7 @@ class GammaStrategyTest {
 	//-----Striking tests-----//
 	
 	@Test
-	void gamePlay1() {
+	void gamePlay1() {//#10
 		game.move(1, 1, 2, 1);//red lie forward
 		game.move(4, 1, 3, 1);//blue col forward
 		assertEquals(OK, game.move(2, 1, 3, 1));//red lie strikes blue col, blue col takes red lie's square
@@ -158,7 +158,7 @@ class GammaStrategyTest {
 	}
 	
 	@Test
-	void gamePlay2() {
+	void gamePlay2() {//#10
 		game.move(1, 1, 2, 1);//move red lie forward
 		game.move(4, 1, 3, 1);//move blue col forward
 		assertEquals(OK, game.move(2, 1, 3, 1));//red lie strikes blue col...col wins and moves to (2,1)
@@ -189,7 +189,7 @@ class GammaStrategyTest {
 	}
 	
 	@Test
-	void gamePlay3() {
+	void gamePlay3() {//#10
 		game.move(1, 1, 2, 1);//red lie forward
 		game.move(4, 1, 3, 1);//blue col forward
 		assertEquals(OK, game.move(2, 1, 3, 1));//red lie strikes blue col...blue col wins and moves to (2,1)
@@ -203,8 +203,6 @@ class GammaStrategyTest {
 		assertEquals(GAME_OVER, game.move(1, 4, 2, 4));//red cap forward...GAME_OVER
 		
 	}
-	
-	//TODO: Make test to determine if a player cannot move anymore
 	
 	
 	/**

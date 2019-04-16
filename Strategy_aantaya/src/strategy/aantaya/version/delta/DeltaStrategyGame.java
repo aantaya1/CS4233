@@ -25,13 +25,12 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 	private BoardImpl board;
 	private boolean isRedTurn;
 	private boolean gameIsOver;
-	private Square previousRedToSquare;
-	private Square previousRedFromSquare;
-	private Square previousBlueToSquare;
-	private Square previousBlueFromSquare;
+	private Square previousRedToSquare;//square that the red team moved to in previous turn
+	private Square previousRedFromSquare;//square that the red team moved from in previous turn
+	private Square previousBlueToSquare;//square that the blue team moved to in previous turn
+	private Square previousBlueFromSquare;//square that the blue team moved from in previous turn
 	private int redRepetition = 0;
 	private int blueRepetition = 0;
-	
 	
 	public DeltaStrategyGame(Board b) {
 		this.board = new BoardImpl(b);

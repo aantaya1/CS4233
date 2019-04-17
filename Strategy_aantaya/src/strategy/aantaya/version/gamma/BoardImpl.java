@@ -21,6 +21,7 @@ import strategy.Board;
 import strategy.Piece;
 import strategy.Piece.PieceColor;
 import strategy.Piece.PieceType;
+import strategy.StrategyException;
 import strategy.aantaya.PieceImpl;
 import strategy.aantaya.Square;
 
@@ -33,6 +34,8 @@ public class BoardImpl implements Board {
 	private Map<Square, Piece> theBoard;
 	private static final List<Square> chokePoints = Arrays.asList(
 			new Square(2,2), new Square(2,3), new Square(3,2), new Square(3,3)); 
+	
+	private int mar=1, col=2, cap=2, lie=3, ser=3, flag=1;
 	
 	//Constants
 	private static final int MAX_ROWS = 5;
@@ -47,16 +50,26 @@ public class BoardImpl implements Board {
 		//Populate red team
 		for(int row=0; row<2; row++) {
 			for(int column=0; column<=MAX_COLUMNS; column++) {
-				//Convert the board to our implementation, including converting each piece to our
-				//	implementation using copy constructor				
-				theBoard.put(new Square(row, column), 
-						new PieceImpl(b.getPieceAt(row, column)));
+				if(b.getPieceAt(row, column) == null) throw new StrategyException("Inproper board layout");
+				PieceImpl p = new PieceImpl(b.getPieceAt(row, column));
+				
+				indexPiece(p);
+				
+				theBoard.put(new Square(row, column), p);
 			}
 		}
 		
+		if(!isCorrectPieceCount()) throw new StrategyException("Inproper board layout");
+		else resetPieceCounts();
+		
 		//Populate blue team
 		for(int row=4; row<6; row++) {
-			for(int column=0; column<=MAX_COLUMNS; column++) {			
+			for(int column=0; column<=MAX_COLUMNS; column++) {	
+				if(b.getPieceAt(row, column) == null) throw new StrategyException("Inproper board layout");
+				PieceImpl p = new PieceImpl(b.getPieceAt(row, column));
+				
+				indexPiece(p);
+				
 				theBoard.put(new Square(row, column), 
 						new PieceImpl(b.getPieceAt(row, column)));
 			}
@@ -116,5 +129,24 @@ public class BoardImpl implements Board {
 			if(s.equals(temp)) return true;
 		
 		return false;
+	}
+	
+	private void indexPiece(Piece p) {
+		if(p.getPieceType() == PieceType.MARSHAL) mar--;
+		else if(p.getPieceType() == PieceType.COLONEL) col--;
+		else if(p.getPieceType() == PieceType.CAPTAIN) cap--;
+		else if(p.getPieceType() == PieceType.LIEUTENANT) lie--;
+		else if(p.getPieceType() == PieceType.SERGEANT) ser--;
+		else if(p.getPieceType() == PieceType.FLAG) flag--;
+	}
+	
+	private void resetPieceCounts() {
+		mar=1; col=2; cap=4; lie=4; ser=4; flag=1;
+	}
+	
+	private boolean isCorrectPieceCount() {
+		int count = mar+col+cap+lie+ser+lie+ser+flag;
+		if(count != 0) return false;
+		return true;
 	}
 }

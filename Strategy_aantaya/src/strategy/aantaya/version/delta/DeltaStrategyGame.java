@@ -31,13 +31,16 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 	private Square previousBlueFromSquare;//square that the blue team moved from in previous turn
 	private int redRepetition = 0;
 	private int blueRepetition = 0;
+	private int redNumMovablePieces;
+	private int blueNumMovablePieces;
 	
 	public DeltaStrategyGame(Board b) {
 		this.board = new BoardImpl(b);
 		this.isRedTurn = true;
 		this.gameIsOver = false;
+		this.redNumMovablePieces = 33;
+		this.blueNumMovablePieces = 33;
 	}
-	
 	
 	/* (non-Javadoc)
 	 * @see strategy.aantaya.StrategyGameTemplate#move(int, int, int, int)
@@ -84,6 +87,9 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 		else {//It's a valid move and square is not occupied, so move to that square
 			board.movePiece(squareFrom, squareTo);
 		}
+		
+		if(redNumMovablePieces <= 0) return BLUE_WINS;
+		else if(blueNumMovablePieces <= 0) return RED_WINS;
 		
 		return OK;
 	}
@@ -140,17 +146,32 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 		//If both pieces are same rank, both get removed from board
 		if(pieceFrom == pieceTo) {
 			board.removeTwoPieces(squareFrom, squareTo);
+			redNumMovablePieces--; blueNumMovablePieces--;
 			return OK;
 		}
 		
 		//if pieceTo is a bomber (rank == 2) and pieceFrom is not a miner (rank == 5)
 		if(pieceTo == 2 && pieceFrom != 5) {
-			board.removeOnePiece(squareFrom);
+			if(board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) blueNumMovablePieces--;
+			else redNumMovablePieces--;
+			
+			board.removeOnePiece(squareFrom);			
 			return OK;
 		}
 		
-		if((pieceFrom > pieceTo) || ((pieceFrom == 3) && (pieceTo == 12))) board.movePiece(squareFrom, squareTo);
-		else board.movePiece(squareTo, squareFrom);
+		//greater rank wins unless its a spy (rank == 3) striking a marshal (rank == 12)
+		if((pieceFrom > pieceTo) || ((pieceFrom == 3) && (pieceTo == 12))) {
+			if(board.getTeamAtSquare(squareTo) == PieceColor.BLUE) blueNumMovablePieces--;
+			else redNumMovablePieces--;
+			
+			board.movePiece(squareFrom, squareTo);
+		}
+		else {
+			if(board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) blueNumMovablePieces--;
+			else redNumMovablePieces--;
+			
+			board.movePiece(squareTo, squareFrom);
+		}
 		
 		return OK;
 	}

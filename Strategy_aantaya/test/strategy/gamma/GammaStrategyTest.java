@@ -201,7 +201,65 @@ class GammaStrategyTest {
 		assertEquals(OK, game.move(2, 1, 3, 1));//red lie strikes blue lie...both taken off board
 		assertEquals(BLUE_WINS, game.move(2, 0, 1, 0));//blue col strikes red flag...BLUE_WINS
 		assertEquals(GAME_OVER, game.move(1, 4, 2, 4));//red cap forward...GAME_OVER
+	}
+	
+	@Test
+	void blueTeamLosesAllMoveablePieces() {
+		game.move(1, 1, 2, 1);//move red lie forward
+		game.move(4, 1, 3, 1);//move blue col forward
+		assertEquals(OK, game.move(2, 1, 3, 1));//red lie strikes blue col...col wins and moves to (2,1)
 		
+		game.move(2, 1, 1, 1);//move blue col forward
+		assertEquals(OK, game.move(0, 1, 1, 1));//red lie strikes blue col...col wins and moves to (0,1)
+		assertEquals(OK, game.move(0, 1, 0, 0));//blue col moves left and strikes red lie...col wins and moves to (0,0)
+		
+		game.move(1, 4, 2, 4);//move red cap forward
+		game.move(4, 4, 3, 4);//move blue ser forward
+		assertEquals(OK, game.move(2, 4, 3, 4));//red cap strikes blue ser...red cap wins and moves to (3,4)
+		
+		game.move(4, 5, 3, 5);//move blue lie forward
+		game.move(1, 5, 2, 5);//move red col forward
+		assertEquals(OK, game.move(3, 5, 2, 5));//blue lie strikes red col..red col wins and moves to (3,5)
+		
+		game.move(3, 4, 4, 4);//move red cap forward
+		assertEquals(OK, game.move(5, 4, 4, 4));//blue col strikes red cap..blue col wins and moves to (4,4)
+		
+		game.move(3, 5, 4, 5);//move red col forward
+		assertEquals(OK, game.move(5, 5, 4, 5));//blue cap strikes red col...red col wins and moves to (5,5)
+		
+		//completed 16 moves, 8 full turns...game continues in GAMMA
+		
+		game.move(5, 5, 5, 4);//move red col left
+		assertEquals(OK, game.move(5, 3, 5, 4));//blue ser strikes red col..red col wins and moves to (5,3)
+		assertEquals(OK, game.move(5, 3, 5, 2));//red col strikes blue ser..red col wins and moves to (5,2)
+		assertEquals(OK, game.move(5, 1, 5, 2));//blue lie strikes red col..red col wins and moves to (5,1)
+		assertEquals(OK, game.move(5, 1, 5, 0));//red col strikes blue lie..red col wins and moves to (5,0)
+		
+		game.move(4, 4, 3, 4);//blue col forward
+		game.move(0, 4, 1, 4);//red col forward
+		game.move(3, 4, 2, 4);//blue col forward
+		assertEquals(OK, game.move(1, 4, 2, 4));//red col strikes blue col...both taken off board
+		
+		game.move(0, 0, 0, 1);//blue col right
+		game.move(1, 3, 1, 4);//red mar right
+		game.move(0, 1, 1, 1);//blue col forward
+		assertEquals(OK, game.move(1, 2, 1, 1));//red ser strikes blue col...blue col wins and moves to (1,2)
+		
+		game.move(1, 2, 1, 3);//blue col right
+		game.move(0, 5, 1, 5);//red cap forward
+		assertEquals(OK, game.move(1, 3, 1, 4));//blue col strikes red mar...red mar wins and moves to (1,3)
+		
+		game.move(1, 3, 1, 4);//red mar right
+		game.move(4, 3, 4, 4);//blue cap right
+		game.move(1, 4, 2, 4);//red mar forward
+		game.move(4, 4, 3, 4);//blue cap forward
+		assertEquals(OK, game.move(2, 4, 3, 4));//red mar strikes blue cap...red mar wins and moves to (3,4)
+		
+		game.move(4, 2, 4, 3);//blue mar right
+		game.move(3, 4, 4, 4);//red mar forward
+		
+		//blue mar strikes red mar...both are lost...blue doesn't have anymore movable pieces so RED_WINS
+		assertEquals(RED_WINS, game.move(4, 3, 4, 4));
 	}
 	
 	

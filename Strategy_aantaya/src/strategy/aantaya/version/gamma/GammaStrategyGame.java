@@ -37,8 +37,8 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 		this.board = new BoardImpl(b);
 		this.isRedTurn = true;
 		this.gameIsOver = false;
-		this.redNumMovablePieces = 23;
-		this.blueNumMovablePieces = 23;
+		this.redNumMovablePieces = 11;
+		this.blueNumMovablePieces = 11;
 	}
 	
 	//from_row, from_column, to_row, to_column

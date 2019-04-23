@@ -224,7 +224,9 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 	}
 	
 	private boolean isCorrectTeamTurn(Square s) {
-		return (!(isRedTurn && (board.getTeamAtSquare(s) == PieceColor.BLUE)) || 
-				(!isRedTurn && (board.getTeamAtSquare(s) == PieceColor.RED)));
+		boolean blueWrong = (isRedTurn && (board.getTeamAtSquare(s) == PieceColor.BLUE));
+		boolean redWrong = (!isRedTurn && (board.getTeamAtSquare(s) == PieceColor.RED));
+		
+		return !(blueWrong || redWrong);
 	}
 }

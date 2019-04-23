@@ -11,10 +11,7 @@
  *******************************************************************************/
 package strategy.aantaya.version.beta;
 
-import static strategy.StrategyGame.MoveResult.BLUE_WINS;
-import static strategy.StrategyGame.MoveResult.GAME_OVER;
-import static strategy.StrategyGame.MoveResult.OK;
-import static strategy.StrategyGame.MoveResult.RED_WINS;
+import static strategy.StrategyGame.MoveResult.*;
 
 import strategy.Board;
 import strategy.Piece.PieceColor;
@@ -51,7 +48,7 @@ public class BetaStrategyGame implements StrategyGame {
 		//If move is not valid, then check piece color. If it's blue red_wins else blue_wins
 		if(!isValidMove(squareFrom, squareTo)) {
 			gameIsOver = true;
-			return (board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) ? RED_WINS : BLUE_WINS;
+			return (isRedTurn) ? BLUE_WINS : RED_WINS;
 		}
 		
 		//In isValidMove() we make sure the correct team is moving so now we can flip this variable
@@ -65,10 +62,9 @@ public class BetaStrategyGame implements StrategyGame {
 				MoveResult result = strike(squareFrom, squareTo);
 				
 				//This means on the teams has taken the flag, so game over
-				if(result != OK) {
-					gameIsOver = true;
-					return result;
-				}
+				if(result == RED_WINS || result == BLUE_WINS) gameIsOver = true;
+				
+				return result;
 			}
 			//If the square is occupied by it's own team then it's an invalid move and opposing team wins
 			else {
@@ -97,12 +93,12 @@ public class BetaStrategyGame implements StrategyGame {
 	 * 	5) Piece must move
 	 * 	6) Cannot move over another piece
 	*/
-	private boolean isValidMove(Square squareFrom, Square squareTo) {		
-		//Make sure it's the team's turn that is the moving piece
-		if(!isCorrectTeamTurn(squareFrom)) return false;
-		
+	private boolean isValidMove(Square squareFrom, Square squareTo) {	
 		//Make sure there is a piece at the from square
 		if(!board.isSquareOccupied(squareFrom)) return false;
+		
+		//Make sure it's the team's turn that is the moving piece
+		if(!isCorrectTeamTurn(squareFrom)) return false;
 		
 		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo, board.getPieceAt(squareFrom))) return false;
 		
@@ -131,14 +127,22 @@ public class BetaStrategyGame implements StrategyGame {
 			return OK;
 		}
 		
-		if(pieceFrom > pieceTo) board.movePiece(squareFrom, squareTo);
-		else board.movePiece(squareTo, squareFrom);
-		
-		return OK;
+		if(pieceFrom > pieceTo) {
+			MoveResult m = (board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) ? STRIKE_BLUE : STRIKE_RED;
+			board.movePiece(squareFrom, squareTo);
+			return m;
+		}
+		else {
+			MoveResult m = (board.getTeamAtSquare(squareTo) == PieceColor.BLUE) ? STRIKE_BLUE : STRIKE_RED;
+			board.movePiece(squareTo, squareFrom);
+			return m;
+		}
 	}
 	
 	private boolean isCorrectTeamTurn(Square s) {
-		return (!(isRedTurn && (board.getTeamAtSquare(s) == PieceColor.BLUE)) || 
-				(!isRedTurn && (board.getTeamAtSquare(s) == PieceColor.RED)));
+		boolean blueWrong = (isRedTurn && (board.getTeamAtSquare(s) == PieceColor.BLUE));
+		boolean redWrong = (!isRedTurn && (board.getTeamAtSquare(s) == PieceColor.RED));
+		
+		return !(blueWrong || redWrong);
 	}
 }

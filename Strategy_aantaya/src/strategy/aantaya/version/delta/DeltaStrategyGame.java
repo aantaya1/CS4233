@@ -13,7 +13,6 @@ import static strategy.StrategyGame.MoveResult.STRIKE_RED;
 import strategy.Board;
 import strategy.Piece.PieceColor;
 import strategy.Piece.PieceType;
-import strategy.StrategyGame.MoveResult;
 import strategy.StrategyGame;
 import strategy.aantaya.PieceImpl;
 import strategy.aantaya.Square;

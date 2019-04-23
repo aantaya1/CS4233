@@ -69,6 +69,9 @@ class GammaMasterTest
 	{
 		MoveResult mr = null;
 		for (Move m : moves) {
+			if(m.fRow == 4 && m.fCol == 5 && m.tRow == 3 && m.tCol == 5) {
+				int i = 0;
+			}
 			mr = theGame.move(m.fRow, m.fCol, m.tRow, m.tCol);
 		}
 		assertEquals(expected, mr, testName);

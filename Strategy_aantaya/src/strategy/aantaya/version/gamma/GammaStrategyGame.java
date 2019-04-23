@@ -3,10 +3,7 @@
  */
 package strategy.aantaya.version.gamma;
 
-import static strategy.StrategyGame.MoveResult.BLUE_WINS;
-import static strategy.StrategyGame.MoveResult.GAME_OVER;
-import static strategy.StrategyGame.MoveResult.OK;
-import static strategy.StrategyGame.MoveResult.RED_WINS;
+import static strategy.StrategyGame.MoveResult.*;
 
 import strategy.Board;
 import strategy.Piece.PieceColor;
@@ -56,7 +53,7 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 		//If move is not valid, then check piece color. If it's blue red_wins else blue_wins
 		if(!isValidMove(squareFrom, squareTo)) {
 			gameIsOver = true;
-			return (board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) ? RED_WINS : BLUE_WINS;
+			return (isRedTurn) ? BLUE_WINS : RED_WINS;
 		}
 		
 		//In isValidMove() we make sure the correct team is moving so now we can flip this variable
@@ -70,10 +67,8 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 				MoveResult result = strike(squareFrom, squareTo);
 				
 				//This means on the teams has taken the flag, so game over
-				if(result != OK) {
-					gameIsOver = true;
-					return result;
-				}
+				if(result == RED_WINS || result == BLUE_WINS) gameIsOver = true;
+				return result;
 			}
 			//If the square is occupied by it's own team then it's an invalid move and opposing team wins
 			else {
@@ -142,9 +137,13 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 			return OK;
 		}
 		
+		MoveResult m;
+		
 		if(pieceFrom > pieceTo) {
 			if(board.getTeamAtSquare(squareTo) == PieceColor.BLUE) blueNumMovablePieces--;
 			else redNumMovablePieces--;
+			
+			m = (board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) ? STRIKE_BLUE : STRIKE_RED;
 			
 			board.movePiece(squareFrom, squareTo);
 		}
@@ -152,10 +151,12 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 			if(board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) blueNumMovablePieces--;
 			else redNumMovablePieces--;
 			
+			m = (board.getTeamAtSquare(squareTo) == PieceColor.BLUE) ? STRIKE_BLUE : STRIKE_RED;
+			
 			board.movePiece(squareTo, squareFrom);
 		}
 		
-		return OK;
+		return m;
 	}
 	
 	private boolean violatesRepetitionRule(Square squareFrom, Square squareTo) {		
@@ -163,7 +164,7 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 			//null check is if it is the first red move of the game
 			//(previousRedToSquare != squareFrom) is to check if the square we are moving from is NOT the square 
 			//	that we moved to in the previous move (i.e. we are moving the same piece we moved in the last turn)
-			if(previousRedToSquare == null || !previousRedToSquare.equals(squareFrom)) {
+			if(previousRedToSquare == null || !previousRedToSquare.equals(squareFrom) || board.isSquareOccupied(squareTo)) {
 				previousRedToSquare = squareTo;
 				previousRedFromSquare = squareFrom;
 				redRepetition = 1;
@@ -189,7 +190,7 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 			return false;
 			
 		}else {
-			if(previousBlueToSquare == null || !previousBlueToSquare.equals(squareFrom)) {
+			if(previousBlueToSquare == null || !previousBlueToSquare.equals(squareFrom) || board.isSquareOccupied(squareTo)) {
 				previousBlueToSquare = squareTo;
 				previousBlueFromSquare = squareFrom;
 				blueRepetition = 1;

@@ -94,7 +94,7 @@ class DeltaMasterTests
 		theBoard.setSquareType(5, 6, CHOKE);
 		theBoard.setSquareType(5, 7, CHOKE);
 		theGame = makeGame(DELTA, theBoard);
-		assertEquals(RED_WINS, theGame.move(3,  1,  4,  1));
+		assertEquals(RED_WINS, theGame.move(3, 1, 4, 1));
 	}
 	
 	@ParameterizedTest

@@ -7,10 +7,13 @@ import static strategy.StrategyGame.MoveResult.BLUE_WINS;
 import static strategy.StrategyGame.MoveResult.GAME_OVER;
 import static strategy.StrategyGame.MoveResult.OK;
 import static strategy.StrategyGame.MoveResult.RED_WINS;
+import static strategy.StrategyGame.MoveResult.STRIKE_BLUE;
+import static strategy.StrategyGame.MoveResult.STRIKE_RED;
 
 import strategy.Board;
 import strategy.Piece.PieceColor;
 import strategy.Piece.PieceType;
+import strategy.StrategyGame.MoveResult;
 import strategy.StrategyGame;
 import strategy.aantaya.PieceImpl;
 import strategy.aantaya.Square;
@@ -159,10 +162,14 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 			return OK;
 		}
 		
+		MoveResult m;
+		
 		//greater rank wins unless its a spy (rank == 3) striking a marshal (rank == 12)
 		if((pieceFrom > pieceTo) || ((pieceFrom == 3) && (pieceTo == 12))) {
 			if(board.getTeamAtSquare(squareTo) == PieceColor.BLUE) blueNumMovablePieces--;
 			else redNumMovablePieces--;
+			
+			m = (board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) ? STRIKE_BLUE : STRIKE_RED;
 			
 			board.movePiece(squareFrom, squareTo);
 		}
@@ -170,10 +177,12 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 			if(board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) blueNumMovablePieces--;
 			else redNumMovablePieces--;
 			
+			m = (board.getTeamAtSquare(squareTo) == PieceColor.BLUE) ? STRIKE_BLUE : STRIKE_RED;
+			
 			board.movePiece(squareTo, squareFrom);
 		}
 		
-		return OK;
+		return m;
 	}
 	
 	private boolean violatesRepetitionRule(Square squareFrom, Square squareTo) {		

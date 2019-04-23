@@ -144,8 +144,10 @@ public class BoardImpl implements Board {
 			else if((xDiff > 0) && (yDiff == 0)) column--;
 			else column++;
 			
+			Square temp = new Square(row, column);
+			
 			//If the square is occupied
-			if(this.isSquareOccupied(new Square(row, column))) return false;
+			if(this.isSquareOccupied(temp) || isChokePoint(temp)) return false;
 		}
 		
 		return true;

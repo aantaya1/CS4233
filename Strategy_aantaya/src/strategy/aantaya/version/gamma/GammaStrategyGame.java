@@ -46,10 +46,6 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 		Square squareFrom = new Square(fr, fc);
 		Square squareTo = new Square(tr, tc);
 		
-		//Make sure there is a piece at the from square
-		if(!board.isSquareOccupied(squareFrom)) 
-			return (isRedTurn) ? BLUE_WINS : RED_WINS;
-		
 		//If move is not valid, then check piece color. If it's blue red_wins else blue_wins
 		if(!isValidMove(squareFrom, squareTo)) {
 			gameIsOver = true;
@@ -97,6 +93,9 @@ public class GammaStrategyGame extends StrategyGameTemplate implements StrategyG
 	*/
 	@Override
 	public boolean isValidMove(Square squareFrom, Square squareTo) {
+		
+		//Make sure there is a piece at the square we are moving from
+		if(!board.isSquareOccupied(squareFrom)) return false;
 		
 		//Make sure it's the team's turn that is moving the piece
 		if(!isCorrectTeamTurn(squareFrom)) return false;

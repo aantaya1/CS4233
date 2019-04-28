@@ -128,7 +128,7 @@ public class BoardImpl implements Board {
 		return false;
 	}	
 	
-	public boolean isClearPath(Square squareFrom, Square squareTo) {
+	public boolean isClearPath(Square squareFrom, Square squareTo, boolean includeSquareTo) {
 		
 		int yDiff = squareFrom.getRow() - squareTo.getRow();
 		int xDiff = squareFrom.getColumn() - squareTo.getColumn();
@@ -137,6 +137,8 @@ public class BoardImpl implements Board {
 		
 		//Set length to be the absolute value
 		int length = Math.max(Math.abs(yDiff), Math.abs(xDiff));
+		
+		if(!includeSquareTo) length = length - 1;
 		
 		for(int i=0; i<length; i++) {
 			if((yDiff > 0) && (xDiff == 0)) row--;

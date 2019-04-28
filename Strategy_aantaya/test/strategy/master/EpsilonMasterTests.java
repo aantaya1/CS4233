@@ -112,7 +112,7 @@ class EpsilonMasterTests
 	{
 		return Stream.of(
 				Arguments.of(makeMoves(3, 0, 5, 0), OK, "39: SCOUT moves 2 spaces"),
-				Arguments.of(makeMoves(3, 0, 6, 0), BLUE_WINS, "40: SCOUT attacks non-adjacent"),
+				Arguments.of(makeMoves(3, 0, 6, 0), STRIKE_BLUE, "40: SCOUT attacks non-adjacent...loses to blue Major"),
 				Arguments.of(makeMoves(3, 1, 4, 1, 6, 1, 5, 1, 4, 1, 5, 1), 
 						STRIKE_RED, "41: Marshal attacks Spy"),
 				Arguments.of(makeMoves(3, 1, 4, 1, 6, 1, 5, 1, 3, 9, 4, 9, 5, 1, 4, 1), 
@@ -139,7 +139,27 @@ class EpsilonMasterTests
 						3, 0, 5, 0,
 						5, 1, 5, 0), 
 						STRIKE_BLUE,
-						"51: Aggressor advantage, blue scout strikes red scout")
+						"51: Aggressor advantage, blue scout strikes red scout"),
+				Arguments.of(makeMoves(
+						3, 1, 4, 1,//red mar forward
+						6, 1, 5, 1,//blue spy forward
+						4, 1, 4, 0,//red mar left
+						5, 1, 6, 1,//blue spy back
+						3, 0, 3, 1,//red scout right
+						6, 0, 5, 0,//blue maj forward
+						3, 1, 6, 1//red scout strikes blue spy
+						),
+						STRIKE_RED,
+						"52: Scout strikes from two squares away"),
+				Arguments.of(makeMoves(
+						3, 1, 4, 1,//red mar forward
+						6, 1, 5, 1,//blue spy forward
+						4, 1, 4, 0,//red mar left (in front of red scout)
+						5, 1, 4, 1,//blue spy forward
+						3, 0, 6, 0//red scout attempts to strike blue maj....red marsh in path
+						),
+						BLUE_WINS,
+						"53: Scout strikes from two squares away, path not clear")
 			);
 	}
 }

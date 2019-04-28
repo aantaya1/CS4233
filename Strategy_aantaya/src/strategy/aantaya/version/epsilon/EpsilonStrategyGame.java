@@ -50,7 +50,7 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 	@Override
 	public MoveResult move(int fr, int fc, int tr, int tc) {
 		
-		if(fr == 4 && fc == 1 && tr == 5 && tc == 1) {
+		if(fr == 3 && fc == 1 && tr == 6 && tc == 1) {
 			@SuppressWarnings("unused")
 			int i = 0;
 		}
@@ -116,9 +116,18 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 		//Make sure piece is not moving diagonally or more than two squares unless its a scout
 		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo, board.getPieceAt(squareFrom))) return false;
 
-		if(board.getPieceAt(squareFrom).getPieceType() == PieceType.SCOUT) {
-			//if it is a scout and it is moving more than one square and it's path is not clear then invalid move
-			if( (yDiff > 1 || xDiff > 1) && (!board.isClearPath(squareFrom, squareTo) ) ) return false;
+		if((board.getPieceAt(squareFrom).getPieceType() == PieceType.SCOUT) && ((yDiff > 1) || (xDiff > 1))) {
+			/*
+			 * Invalid move if:
+			 * -moving more than three squares and path is NOT clear
+			 * -moving three squares or less and path is NOT clear (except for the squareTo, which can only be an enemy piece)
+			 */
+			if(board.isSquareOccupied(squareTo)) {
+				if(!board.isClearPath(squareFrom, squareTo, false)) return false;
+				if((yDiff > 3) || (xDiff > 3)) return false;
+			}else {
+				if(!board.isClearPath(squareFrom, squareTo, true)) return false;
+			}
 		}
 		else if((yDiff > 1) || (xDiff > 1)) return false; //if not a scout can not move more than one square
 		

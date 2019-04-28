@@ -17,6 +17,7 @@ import strategy.StrategyGame.Version;
 import strategy.aantaya.version.alpha.AlphaStrategyGame;
 import strategy.aantaya.version.beta.BetaStrategyGame;
 import strategy.aantaya.version.delta.DeltaStrategyGame;
+import strategy.aantaya.version.epsilon.EpsilonStrategyGame;
 import strategy.aantaya.version.gamma.GammaStrategyGame;
 
 /**
@@ -41,6 +42,9 @@ public class StrategyGameFactory
 				break;
 			case DELTA:
 				game = new DeltaStrategyGame(board);
+				break;
+			case EPSILON:
+				game = new EpsilonStrategyGame(board);
 				break;
 			default:
 				throw new NotImplementedException(

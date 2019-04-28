@@ -1,7 +1,7 @@
 /**
  * 
  */
-package strategy.aantaya.version.delta;
+package strategy.aantaya.version.epsilon;
 
 import static strategy.StrategyGame.MoveResult.BLUE_WINS;
 import static strategy.StrategyGame.MoveResult.GAME_OVER;
@@ -22,7 +22,7 @@ import strategy.aantaya.StrategyGameTemplate;
  * @author Owner
  *
  */
-public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyGame {
+public class EpsilonStrategyGame extends StrategyGameTemplate implements StrategyGame {
 
 	private BoardImpl board;
 	private boolean isRedTurn;
@@ -36,7 +36,7 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 	private int redNumMovablePieces;
 	private int blueNumMovablePieces;
 	
-	public DeltaStrategyGame(Board b) {
+	public EpsilonStrategyGame(Board b) {
 		this.board = new BoardImpl(b);
 		this.isRedTurn = true;
 		this.gameIsOver = false;
@@ -49,6 +49,12 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 	 */
 	@Override
 	public MoveResult move(int fr, int fc, int tr, int tc) {
+		
+		if(fr == 4 && fc == 1 && tr == 5 && tc == 1) {
+			@SuppressWarnings("unused")
+			int i = 0;
+		}
+		
 		if(gameIsOver) return GAME_OVER;
 		
 		Square squareFrom = new Square(fr, fc);
@@ -77,7 +83,7 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 				result = strike(squareFrom, squareTo);
 				
 				//This means on the teams has taken the flag, so game over
-				if(result == RED_WINS || result == BLUE_WINS) gameIsOver = true;
+				if(result == RED_WINS || result == BLUE_WINS) gameIsOver = true;	
 			}
 			//If the square is occupied by it's own team then it's an invalid move and opposing team wins
 			else {
@@ -145,13 +151,6 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 			return (board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) ? BLUE_WINS : RED_WINS;
 		}
 		
-		//If both pieces are same rank, both get removed from board
-		if(pieceFrom == pieceTo) {
-			board.removeTwoPieces(squareFrom, squareTo);
-			redNumMovablePieces--; blueNumMovablePieces--;
-			return OK;
-		}
-		
 		//if pieceTo is a bomber (rank == 2) and pieceFrom is not a miner (rank == 5)
 		if(pieceTo == 2 && pieceFrom != 5) {
 			if(board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) blueNumMovablePieces--;
@@ -164,7 +163,7 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 		MoveResult m;
 		
 		//greater rank wins unless its a spy (rank == 3) striking a marshal (rank == 12)
-		if((pieceFrom > pieceTo) || ((pieceFrom == 3) && (pieceTo == 12))) {
+		if((pieceFrom >= pieceTo) || ((pieceFrom == 3) && (pieceTo == 12))) {
 			if(board.getTeamAtSquare(squareTo) == PieceColor.BLUE) blueNumMovablePieces--;
 			else redNumMovablePieces--;
 			

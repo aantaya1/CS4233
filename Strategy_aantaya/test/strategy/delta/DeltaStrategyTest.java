@@ -4,10 +4,7 @@
 package strategy.delta;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static strategy.StrategyGame.MoveResult.BLUE_WINS;
-import static strategy.StrategyGame.MoveResult.GAME_OVER;
-import static strategy.StrategyGame.MoveResult.OK;
-import static strategy.StrategyGame.MoveResult.RED_WINS;
+import static strategy.StrategyGame.MoveResult.*;
 import static strategy.StrategyGame.Version.DELTA;
 import static strategy.required.StrategyGameFactory.makeGame;
 
@@ -176,7 +173,7 @@ public class DeltaStrategyTest {
 		game.move(6, 1, 5, 1);//blue spy forward
 		game.move(4, 0, 4, 1);//red mar right
 		game.move(6, 5, 5, 5);//blue lie forward
-		assertEquals(OK, game.move(4, 1, 5, 1));//red mar strikes blue spy...mar wins and moves to (5,1)
+		assertEquals(STRIKE_RED, game.move(4, 1, 5, 1));//red mar strikes blue spy...mar wins and moves to (5,1)
 	}
 	
 	@Test
@@ -184,7 +181,7 @@ public class DeltaStrategyTest {
 		game.move(3, 0, 4, 0);//red mar forward
 		game.move(6, 1, 5, 1);//blue spy forward
 		game.move(4, 0, 4, 1);//red mar right
-		assertEquals(OK, game.move(5, 1, 4, 1));//blue spy strikes red mar...spy wins and moves to (4,1)
+		assertEquals(STRIKE_BLUE, game.move(5, 1, 4, 1));//blue spy strikes red mar...spy wins and moves to (4,1)
 		game.move(3, 4, 4, 4);//move red cap forward
 		game.move(4, 1, 4, 0);//move blue spy left
 		game.move(4, 4, 5, 4);//move red cap forward
@@ -228,7 +225,7 @@ public class DeltaStrategyTest {
 		game.move(6, 4, 5, 4);//blue cap forward
 		game.move(5, 8, 6, 8);//red miner forward (in front of bomb)
 		game.move(6, 0, 5, 0);//blue mar forward
-		assertEquals(OK, game.move(6, 8, 7, 8));//red miner strikes bomb...blue bomb taken off board
+		assertEquals(STRIKE_RED, game.move(6, 8, 7, 8));//red miner strikes bomb...blue bomb taken off board
 		game.move(5, 4, 4, 4);//blue cap forward
 		assertEquals(OK, game.move(7, 8, 6, 8));//red miner backward
 	}

@@ -103,8 +103,9 @@ public class BoardImpl implements Board {
 	}
 	
 	public boolean movablePiece(Square s) {
+		if(!this.isSquareOccupied(s)) return false;
 		PieceType p = theBoard.get(s).getPieceType();
-		if(p == PieceType.FLAG) return false;
+		if(p == PieceType.FLAG || p == PieceType.BOMB) return false;
 		else return true;
 	}
 	
@@ -176,5 +177,15 @@ public class BoardImpl implements Board {
 		int count = mar+gen+col+maj+cap+lie+ser+lie+ser+min+scout+spy+bomb+flag;
 		if(count != 0) return false;
 		return true;
+	}
+	
+	public boolean rowHasMoveablePieces(int row) {
+		for(int column=0; column<=MAX_COLUMNS; column++) {
+			if(column == 2 || column == 3 || column == 6 || column == 7) continue;
+			Square s = new Square(row, column);
+			if(!this.isSquareOccupied(s) || this.movablePiece(s)) return true;
+		}
+		
+		return false;
 	}
 }

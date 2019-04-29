@@ -113,6 +113,7 @@ public class BoardImpl implements Board {
 	}
 	
 	public boolean movablePiece(Square s) {
+		if(!this.isSquareOccupied(s)) return false;
 		PieceType p = theBoard.get(s).getPieceType();
 		if(p == PieceType.FLAG || p == PieceType.BOMB) return false;
 		else return true;
@@ -193,5 +194,15 @@ public class BoardImpl implements Board {
 	public void strikeBomb(Square bomb) {
 		//if explode() returns true this means bomb has used its last charge so remove the bomb from the board
 		if(bombManager.explode(bomb)) this.removeOnePiece(bomb);
+	}
+	
+	public boolean rowHasMoveablePieces(int row) {
+		for(int column=0; column<=MAX_COLUMNS; column++) {
+			if(column == 2 || column == 3 || column == 6 || column == 7) continue;
+			Square s = new Square(row, column);
+			if(!this.isSquareOccupied(s) || this.movablePiece(s)) return true;
+		}
+		
+		return false;
 	}
 }

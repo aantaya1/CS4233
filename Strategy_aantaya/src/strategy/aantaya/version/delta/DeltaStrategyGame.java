@@ -35,6 +35,7 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 	private int blueRepetition = 0;
 	private int redNumMovablePieces;
 	private int blueNumMovablePieces;
+	private int numTurns = 0;
 	
 	public DeltaStrategyGame(Board b) {
 		this.board = new BoardImpl(b);
@@ -92,6 +93,11 @@ public class DeltaStrategyGame extends StrategyGameTemplate implements StrategyG
 		
 		if(redNumMovablePieces <= 0) return BLUE_WINS;
 		else if(blueNumMovablePieces <= 0) return RED_WINS;
+		
+		if(numTurns++ < 2) {
+			if(!isRedTurn && !board.rowHasMoveablePieces(6)) return RED_WINS;
+			else if(isRedTurn && !board.rowHasMoveablePieces(3)) return BLUE_WINS;
+		}
 		
 		return result;
 	}

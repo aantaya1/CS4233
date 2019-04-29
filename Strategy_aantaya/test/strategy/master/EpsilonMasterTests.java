@@ -75,27 +75,27 @@ class EpsilonMasterTests
 		assertThrows(StrategyException.class, ()-> makeGame(DELTA, new TestBoard(5, 5)));
 	}
 	
-//	@Test
-//	void blueCannotMove()
-//	{
-//		theBoard = new TestBoard(10, 10);
-//		blueLineup = theBoard.makeLineup(BLUE,
-//				COLONEL, CAPTAIN, SCOUT, MAJOR, MINER, SCOUT, COLONEL, LIEUTENANT, MINER, SPY, 
-//				MAJOR, SERGEANT, GENERAL, MINER, CAPTAIN, SCOUT, LIEUTENANT, SERGEANT, MARSHAL, CAPTAIN,
-//				SCOUT, BOMB, LIEUTENANT, SERGEANT, CAPTAIN, MAJOR, MINER, LIEUTENANT, SCOUT, SERGEANT,
-//				FLAG, BOMB, SCOUT, SCOUT, BOMB, BOMB, SCOUT, MINER, BOMB, BOMB);
-//		theBoard.initialize(10,  10, redLineup, blueLineup);
-//		theBoard.setSquareType(4, 2, CHOKE);
-//		theBoard.setSquareType(4, 3, CHOKE);
-//		theBoard.setSquareType(5, 2, CHOKE);
-//		theBoard.setSquareType(5, 3, CHOKE);
-//		theBoard.setSquareType(4, 6, CHOKE);
-//		theBoard.setSquareType(4, 7, CHOKE);
-//		theBoard.setSquareType(5, 6, CHOKE);
-//		theBoard.setSquareType(5, 7, CHOKE);
-//		theGame = makeGame(EPSILON, theBoard);
-//		assertEquals(RED_WINS, theGame.move(3, 1, 4, 1));
-//	}
+	@Test
+	void blueCannotMove()
+	{
+		theBoard = new TestBoard(10, 10);
+		blueLineup = theBoard.makeLineup(BLUE,
+				COLONEL, CAPTAIN, SCOUT, MAJOR, MINER, SCOUT, COLONEL, LIEUTENANT, MINER, SPY, 
+				MAJOR, SERGEANT, GENERAL, MINER, CAPTAIN, SCOUT, LIEUTENANT, SERGEANT, MARSHAL, CAPTAIN,
+				SCOUT, BOMB, LIEUTENANT, SERGEANT, CAPTAIN, MAJOR, MINER, LIEUTENANT, SCOUT, SERGEANT,
+				FLAG, BOMB, SCOUT, SCOUT, BOMB, BOMB, SCOUT, MINER, BOMB, BOMB);
+		theBoard.initialize(10,  10, redLineup, blueLineup);
+		theBoard.setSquareType(4, 2, CHOKE);
+		theBoard.setSquareType(4, 3, CHOKE);
+		theBoard.setSquareType(5, 2, CHOKE);
+		theBoard.setSquareType(5, 3, CHOKE);
+		theBoard.setSquareType(4, 6, CHOKE);
+		theBoard.setSquareType(4, 7, CHOKE);
+		theBoard.setSquareType(5, 6, CHOKE);
+		theBoard.setSquareType(5, 7, CHOKE);
+		theGame = makeGame(EPSILON, theBoard);
+		assertEquals(RED_WINS, theGame.move(3, 1, 4, 1));
+	}
 	
 	@ParameterizedTest
 	@MethodSource("masterProvider")

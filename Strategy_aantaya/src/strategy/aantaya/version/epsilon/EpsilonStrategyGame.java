@@ -51,11 +51,6 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 	@Override
 	public MoveResult move(int fr, int fc, int tr, int tc) {
 		
-		//3,1,4,1
-		if(fr == 3 && fc == 0 && tr == 4 && tc == 0 && numTurns == 0) {
-			int i = 0;
-		}
-		
 		if(gameIsOver) return GAME_OVER;
 		
 		Square squareFrom = new Square(fr, fc);
@@ -196,7 +191,7 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 			
 			board.movePiece(squareFrom, squareTo);
 		}
-		
+		//pieceFrom < pieceTo
 		else {
 			if(board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) blueNumMovablePieces--;
 			else redNumMovablePieces--;

@@ -72,30 +72,30 @@ class EpsilonMasterTests
 				CAPTAIN, LIEUTENANT, GENERAL, SCOUT, SERGEANT, SPY, MAJOR, SERGEANT, SCOUT, LIEUTENANT,
 				SERGEANT, MINER, SCOUT, FLAG, CAPTAIN, LIEUTENANT, SCOUT, MINER, CAPTAIN, MINER,
 				SCOUT, MARSHAL, CAPTAIN, MAJOR, MAJOR, BOMB, SERGEANT, COLONEL, BOMB, SCOUT);
-		assertThrows(StrategyException.class, ()-> makeGame(DELTA, new TestBoard(5, 5)));
+		assertThrows(StrategyException.class, ()-> makeGame(EPSILON, new TestBoard(5, 5)));
 	}
 	
-//	@Test
-//	void blueCannotMove()
-//	{
-//		theBoard = new TestBoard(10, 10);
-//		blueLineup = theBoard.makeLineup(BLUE,
-//				COLONEL, CAPTAIN, SCOUT, MAJOR, MINER, SCOUT, COLONEL, LIEUTENANT, MINER, SPY, 
-//				MAJOR, SERGEANT, GENERAL, MINER, CAPTAIN, SCOUT, LIEUTENANT, SERGEANT, MARSHAL, CAPTAIN,
-//				SCOUT, BOMB, LIEUTENANT, SERGEANT, CAPTAIN, MAJOR, MINER, LIEUTENANT, SCOUT, SERGEANT,
-//				FLAG, BOMB, SCOUT, SCOUT, BOMB, BOMB, SCOUT, MINER, BOMB, BOMB);
-//		theBoard.initialize(10,  10, redLineup, blueLineup);
-//		theBoard.setSquareType(4, 2, CHOKE);
-//		theBoard.setSquareType(4, 3, CHOKE);
-//		theBoard.setSquareType(5, 2, CHOKE);
-//		theBoard.setSquareType(5, 3, CHOKE);
-//		theBoard.setSquareType(4, 6, CHOKE);
-//		theBoard.setSquareType(4, 7, CHOKE);
-//		theBoard.setSquareType(5, 6, CHOKE);
-//		theBoard.setSquareType(5, 7, CHOKE);
-//		theGame = makeGame(EPSILON, theBoard);
-//		assertEquals(RED_WINS, theGame.move(3, 1, 4, 1));
-//	}
+	@Test
+	void blueCannotMove()
+	{
+		theBoard = new TestBoard(10, 10);
+		blueLineup = theBoard.makeLineup(BLUE,
+				COLONEL, CAPTAIN, SCOUT, MAJOR, MINER, SCOUT, COLONEL, LIEUTENANT, MINER, SPY, 
+				MAJOR, SERGEANT, GENERAL, MINER, CAPTAIN, SCOUT, LIEUTENANT, SERGEANT, MARSHAL, CAPTAIN,
+				SCOUT, BOMB, LIEUTENANT, SERGEANT, CAPTAIN, MAJOR, MINER, LIEUTENANT, SCOUT, SERGEANT,
+				FLAG, BOMB, SCOUT, SCOUT, BOMB, BOMB, SCOUT, MINER, BOMB, BOMB);
+		theBoard.initialize(10,  10, redLineup, blueLineup);
+		theBoard.setSquareType(4, 2, CHOKE);
+		theBoard.setSquareType(4, 3, CHOKE);
+		theBoard.setSquareType(5, 2, CHOKE);
+		theBoard.setSquareType(5, 3, CHOKE);
+		theBoard.setSquareType(4, 6, CHOKE);
+		theBoard.setSquareType(4, 7, CHOKE);
+		theBoard.setSquareType(5, 6, CHOKE);
+		theBoard.setSquareType(5, 7, CHOKE);
+		theGame = makeGame(EPSILON, theBoard);
+		assertEquals(RED_WINS, theGame.move(3, 1, 4, 1));
+	}
 	
 	@ParameterizedTest
 	@MethodSource("masterProvider")
@@ -112,6 +112,9 @@ class EpsilonMasterTests
 	{
 		return Stream.of(
 				Arguments.of(makeMoves(3, 0, 5, 0), OK, "39: SCOUT moves 2 spaces"),
+				Arguments.of(makeMoves(4, 0, 5, 0), BLUE_WINS, "No piece in fromSquare"),
+				Arguments.of(makeMoves(3, 9, 6, 9), RED_WINS, "Red takes blue flag"),
+				Arguments.of(makeMoves(2, 0, 3, 0), BLUE_WINS, "Move to piece occupied by own team"),
 				Arguments.of(makeMoves(3, 0, 6, 0), STRIKE_BLUE, "40: SCOUT attacks non-adjacent...loses to blue Major"),
 				Arguments.of(makeMoves(3, 4, 5, 4), BLUE_WINS, "Non-scout piece moves more than one square"),
 				Arguments.of(makeMoves(6, 4, 5, 4), BLUE_WINS, "Red moved wrong color piece"),
@@ -120,6 +123,8 @@ class EpsilonMasterTests
 				Arguments.of(makeMoves(3, 5, 4, 5), BLUE_WINS, "Try to move bomb"),
 				Arguments.of(makeMoves(3, 1, 4, 1, 6, 1, 5, 1, 4, 1, 5, 1), 
 						STRIKE_RED, "41: Marshal attacks Spy"),
+				Arguments.of(makeMoves(3, 4, 4, 4, 6, 4, 5, 4, 3, 0, 4, 0, 5, 4, 4, 4), 
+						STRIKE_RED, "Lie strikes marshal"),
 				Arguments.of(makeMoves(3, 1, 4, 1, 6, 1, 5, 1, 3, 9, 4, 9, 5, 1, 4, 1), 
 						STRIKE_BLUE, "42: Spy attacks Marshal"),
 				Arguments.of(makeMoves(3, 1, 4, 1, 6, 1, 5, 1, 4, 1, 3, 1, 5, 1, 6, 1, 3, 1, 4, 1),

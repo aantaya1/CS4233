@@ -50,7 +50,7 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 	@Override
 	public MoveResult move(int fr, int fc, int tr, int tc) {
 		
-		if(fr == 3 && fc == 1 && tr == 6 && tc == 1) {
+		if(fr == 6 && fc == 4 && tr == 5 && tc == 4) {
 			@SuppressWarnings("unused")
 			int i = 0;
 		}
@@ -129,7 +129,7 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 				if(!board.isClearPath(squareFrom, squareTo, true)) return false;
 			}
 		}
-		else if((yDiff > 1) || (xDiff > 1)) return false; //if not a scout can not move more than one square
+		else if((yDiff > 1) || (xDiff > 1)) return false; //if not a scout, then piece cannot move more than one square
 		
 		//Cannot move to a choke point
 		if(BoardImpl.isChokePoint(squareTo)) return false;
@@ -164,6 +164,8 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 		if(pieceTo == 2 && pieceFrom != 5) {
 			if(board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) blueNumMovablePieces--;
 			else redNumMovablePieces--;
+			
+			board.strikeBomb(squareTo);
 			
 			board.removeOnePiece(squareFrom);			
 			return OK;

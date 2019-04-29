@@ -3,6 +3,7 @@
  */
 package strategy.aantaya.version.epsilon;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +11,9 @@ import java.util.Map;
 
 import strategy.Board;
 import strategy.Piece;
-import strategy.StrategyException;
 import strategy.Piece.PieceColor;
 import strategy.Piece.PieceType;
+import strategy.StrategyException;
 import strategy.aantaya.PieceImpl;
 import strategy.aantaya.Square;
 
@@ -23,6 +24,8 @@ import strategy.aantaya.Square;
 public class BoardImpl implements Board {
 
 	private Map<Square, Piece> theBoard;
+	private BombManager bombManager;
+	
 	private static final List<Square> chokePoints = Arrays.asList(
 			new Square(4,2), new Square(4,3), new Square(5,2), new Square(5,3),
 			new Square(4,6), new Square(4,7), new Square(5,6), new Square(5,7)); 
@@ -38,17 +41,20 @@ public class BoardImpl implements Board {
 	 */
 	public BoardImpl(Board b) {
 		theBoard = new HashMap<Square, Piece>();
+		List<Square> bombs = new ArrayList();
 		
 		//Populate red team
 		for(int row=0; row<=3; row++) {
 			for(int column=0; column<=MAX_COLUMNS; column++) {
 				if(b.getPieceAt(row, column) == null) throw new StrategyException("Inproper board layout");
 				PieceImpl p = new PieceImpl(b.getPieceAt(row, column));
+				Square s = new Square(row, column);
+				
+				if(p.getPieceType() == PieceType.BOMB) bombs.add(s);
 				
 				indexPiece(p);
 				
-				theBoard.put(new Square(row, column), 
-						new PieceImpl(b.getPieceAt(row, column)));
+				theBoard.put(s, p);
 			}
 		}
 		
@@ -60,13 +66,17 @@ public class BoardImpl implements Board {
 			for(int column=0; column<=MAX_COLUMNS; column++) {	
 				if(b.getPieceAt(row, column) == null) throw new StrategyException("Inproper board layout");
 				PieceImpl p = new PieceImpl(b.getPieceAt(row, column));
+				Square s = new Square(row, column);
+				
+				if(p.getPieceType() == PieceType.BOMB) bombs.add(s);
 				
 				indexPiece(p);
 				
-				theBoard.put(new Square(row, column), 
-						new PieceImpl(b.getPieceAt(row, column)));
+				theBoard.put(s, p);
 			}
 		}
+		
+		bombManager = new BombManager(bombs);
 	}
 	
 	public void movePiece(Square from, Square to) {
@@ -104,7 +114,7 @@ public class BoardImpl implements Board {
 	
 	public boolean movablePiece(Square s) {
 		PieceType p = theBoard.get(s).getPieceType();
-		if(p == PieceType.FLAG) return false;
+		if(p == PieceType.FLAG || p == PieceType.BOMB) return false;
 		else return true;
 	}
 	
@@ -178,5 +188,10 @@ public class BoardImpl implements Board {
 		int count = mar+gen+col+maj+cap+lie+ser+lie+ser+min+scout+spy+bomb+flag;
 		if(count != 0) return false;
 		return true;
+	}
+	
+	public void strikeBomb(Square bomb) {
+		//if explode() returns true this means bomb has used its last charge so remove the bomb from the board
+		if(bombManager.explode(bomb)) this.removeOnePiece(bomb);
 	}
 }

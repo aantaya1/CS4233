@@ -1,0 +1,7 @@
+(all tests from gamma, except ones related to aggressor advantage and scouts)
+
+51: Aggressor advantage, blue scout strikes red scout
+52: Scout strikes from three squares away
+53: Scout strikes from three squares away, path not clear
+54: Scout attempts to strike from four squares away
+55: Bomb is taken off board after explodes twice

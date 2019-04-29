@@ -50,11 +50,6 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 	@Override
 	public MoveResult move(int fr, int fc, int tr, int tc) {
 		
-		if(fr == 6 && fc == 4 && tr == 5 && tc == 4) {
-			@SuppressWarnings("unused")
-			int i = 0;
-		}
-		
 		if(gameIsOver) return GAME_OVER;
 		
 		Square squareFrom = new Square(fr, fc);
@@ -117,11 +112,10 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 		if(!PieceImpl.isValidPhysicalMove(squareFrom, squareTo, board.getPieceAt(squareFrom))) return false;
 
 		if((board.getPieceAt(squareFrom).getPieceType() == PieceType.SCOUT) && ((yDiff > 1) || (xDiff > 1))) {
-			/*
-			 * Invalid move if:
-			 * -moving more than three squares and path is NOT clear
-			 * -moving three squares or less and path is NOT clear (except for the squareTo, which can only be an enemy piece)
-			 */
+			 //Invalid move if:
+			 //-moving more than three squares and path is NOT clear
+			 //-moving three squares or less and path is NOT clear (except for the squareTo, which can only be an enemy piece)
+			 
 			if(board.isSquareOccupied(squareTo)) {
 				if(!board.isClearPath(squareFrom, squareTo, false)) return false;
 				if((yDiff > 3) || (xDiff > 3)) return false;
@@ -173,8 +167,17 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 		
 		MoveResult m;
 		
+		//if pieceFrom is scout and pieceTo is greater that scout do something different
+		if(pieceFrom == 4 && (pieceTo > pieceFrom)) {
+			if(board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) blueNumMovablePieces--;
+			else redNumMovablePieces--;
+			
+			m = (board.getTeamAtSquare(squareTo) == PieceColor.BLUE) ? STRIKE_BLUE : STRIKE_RED;
+			board.removeOnePiece(squareFrom);
+		}
+		
 		//greater rank wins unless its a spy (rank == 3) striking a marshal (rank == 12)
-		if((pieceFrom >= pieceTo) || ((pieceFrom == 3) && (pieceTo == 12))) {
+		else if((pieceFrom >= pieceTo) || ((pieceFrom == 3) && (pieceTo == 12))) {
 			if(board.getTeamAtSquare(squareTo) == PieceColor.BLUE) blueNumMovablePieces--;
 			else redNumMovablePieces--;
 			
@@ -182,6 +185,7 @@ public class EpsilonStrategyGame extends StrategyGameTemplate implements Strateg
 			
 			board.movePiece(squareFrom, squareTo);
 		}
+		
 		else {
 			if(board.getTeamAtSquare(squareFrom) == PieceColor.BLUE) blueNumMovablePieces--;
 			else redNumMovablePieces--;

@@ -10,7 +10,7 @@
  * Copyright ©2016 Gary F. Pollice
  *******************************************************************************/
 
-package strategy.master;
+package strategy.epsilon;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static strategy.Board.SquareType.CHOKE;
@@ -25,7 +25,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 import strategy.*;
 import strategy.StrategyGame.MoveResult;
-import static strategy.master.Move.makeMoves;
+import static strategy.epsilon.Move.makeMoves;
 import static strategy.StrategyGame.MoveResult.*;
 /**
  * Description
@@ -194,13 +194,7 @@ class EpsilonMasterTests
 						2, 8, 3, 8
 						),
 						OK,
-						"55: Bomb is taken off board after explodes twice"),
-				Arguments.of(makeMoves(
-						3, 0, 6, 0, //red scout strikes blue maj
-						6, 0, 5, 0 //blue maj forward (since the piece was not take off board nor moved from orig. position)
-						),
-						OK,
-						"56: Scout distance attack. Scout losses and the winning piece stays put.")
+						"55: Bomb is taken off board after explodes twice")
 			);
 	}
 }
